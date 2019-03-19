@@ -87,7 +87,9 @@ public class TimeLineActivity extends AppCompatActivity {
             adapter.notifyItemInserted(0);
             rvTweets.smoothScrollToPosition(0);
         }
+
     }
+
 
     private void populateHomeTimeLine() {
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
