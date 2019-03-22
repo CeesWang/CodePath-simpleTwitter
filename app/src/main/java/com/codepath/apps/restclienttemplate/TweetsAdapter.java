@@ -34,6 +34,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Tweet tweet = tweets.get(i);
+        viewHolder.tvTime.setText(tweet.createdAt);
         viewHolder.tvBody.setText(tweet.body);
         viewHolder.tvScreenName.setText(tweet.user.screenName);
         Glide.with(context).load(tweet.user.profileImageUrl).into(viewHolder.ivProfileImage);
@@ -58,9 +59,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public ImageView ivProfileImage;
         public TextView tvScreenName;
         public TextView tvBody;
+        public TextView tvTime;
 
         public ViewHolder (View itemView) {
             super(itemView);
+            tvTime = itemView.findViewById(R.id.tvTime);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);

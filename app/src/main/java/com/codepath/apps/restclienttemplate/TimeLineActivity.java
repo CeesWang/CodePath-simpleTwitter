@@ -2,10 +2,13 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,13 +27,15 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class TimeLineActivity extends AppCompatActivity {
-
+    private DividerItemDecoration itemDecorator;
+    private EndlessRecyclerViewScrollListener scrollListener;
     private TwitterClient client;
     private RecyclerView rvTweets;
     private TweetsAdapter adapter;
     private List<Tweet> tweets;
     private final int REQUEST_CODE = 20;
     private SwipeRefreshLayout swipeContainer;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +49,19 @@ public class TimeLineActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
         rvTweets = findViewById(R.id.rvTweets);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this,tweets);
 
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
+
+       // rvTweets.addItemDecoration(new DividerItemDecoration(rvTweets.getContext(),this.getResources().getConfiguration().orientation));
+        itemDecorator = new DividerItemDecoration(rvTweets.getContext(), this.getResources().getConfiguration().orientation);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(rvTweets.getContext(), R.drawable.divider));
+        rvTweets.addItemDecoration(itemDecorator);
         populateHomeTimeLine();
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
